@@ -88,6 +88,10 @@ impl Chart {
         self.penalized.retain(| (x, y) | *x != row || *y != col);
         Ok(())
     }
+
+    pub fn get(&mut self, row: usize, col: usize) -> Option<&Terrain> {
+        return self.contents.get(row, col);
+    }
 }
 
 pub trait TerrainSettable {
