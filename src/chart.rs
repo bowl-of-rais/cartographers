@@ -17,5 +17,16 @@ pub enum Terrain {
 
 pub struct Chart {
     contents: Array2D<Terrain>,
-    ruins: Vec<(usize, usize)>
+    ruins: Vec<(usize, usize)>,
+    penalized: Vec<(usize, usize)>
+}
+
+impl Chart {
+    pub fn new() -> Chart {
+        Chart {
+            contents: Array2D::filled_with(Terrain::Empty, CHART_SIZE, CHART_SIZE),
+            ruins: Vec::new(),
+            penalized: Vec::new()
+        }
+    }
 }
