@@ -1,11 +1,24 @@
 use std::fmt;
 use std::fmt::Display;
 
-use array2d::Array2D;
+use array2d::{Array2D, Error};
 
 const CHART_SIZE: usize = 11;
 
+#[derive(Debug)]
+pub enum MapError {
+    SpaceNotEmptyError,
+    ArrayError(Error)
+}
+
+impl From<Error> for MapError {
+    fn from(err: Error) -> MapError {
+        MapError::ArrayError(err)
+    }
+}
+
 #[derive(Clone)]
+#[derive(PartialEq)]
 pub enum Terrain {
     Empty,
     Farm,
@@ -59,5 +72,29 @@ impl Chart {
             ruins: Vec::new(),
             penalized: Vec::new()
         }
+    }
+
+    pub fn set(&mut self, row: usize, col: usize, terrain: Terrain) -> Result<(), MapError> {
+        self.contents.set_terrain(row, col, terrain)?;
+        self.penalized.retain(| (x, y) | *x != row || *y != col);
+        Ok(())
+    }
+}
+
+pub trait TerrainSettable {
+    fn set_terrain(&mut self, row: usize, column: usize, element: Terrain) -> Result<(), MapError>;
+}
+
+impl TerrainSettable for Array2D<Terrain> {
+    fn set_terrain(&mut self, row: usize, column: usize, element: Terrain) -> Result<(), MapError> {
+        let current = self.get(row, column).ok_or(Error::IndicesOutOfBounds(row, column))?;
+        
+        if *current == Terrain::Empty { 
+            self.set(row, column, element)?; 
+        } else { 
+            return Err(MapError::SpaceNotEmptyError);
+        }
+
+        Ok(())
     }
 }
