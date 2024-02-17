@@ -7,8 +7,17 @@ const CHART_SIZE: usize = 11;
 
 #[derive(Debug)]
 pub enum MapError {
-    SpaceNotEmptyError,
+    SpaceNotEmpty,
     ArrayError(Error)
+}
+
+impl Display for MapError {
+    fn fmt(&self, f: &mut std::fmt::Formatter)->std::fmt::Result{
+        match self {
+            MapError::SpaceNotEmpty => Display::fmt(&"SpaceNotEmpty", f),
+            MapError::ArrayError(e) => Display::fmt(e, f)
+        }
+    }
 }
 
 impl From<Error> for MapError {
@@ -92,7 +101,7 @@ impl TerrainSettable for Array2D<Terrain> {
         if *current == Terrain::Empty { 
             self.set(row, column, element)?; 
         } else { 
-            return Err(MapError::SpaceNotEmptyError);
+            return Err(MapError::SpaceNotEmpty);
         }
 
         Ok(())
