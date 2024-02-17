@@ -1,3 +1,11 @@
+mod chart;
+
+use chart::Chart;
+
 fn main() {
-    println!("This is cartographers! :>")
+    let mut c: Chart = Chart::new();
+    match c.set(3, 3, chart::Terrain::Trees) {
+        Ok(_) => print!("{}", c),
+        Err(e) => print!("{}", e)
+    }
 }
