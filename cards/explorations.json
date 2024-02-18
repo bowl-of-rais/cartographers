@@ -1,16 +1,79 @@
 [
     { 
-        "name" : "coastal village", 
+        "name" : "Coastal Village", 
         "duration" : 2, 
         "terrains" : ["Village", "Water"], 
         "shapes" : [[[true, true, true], [true, false, false]]], 
-        "coin_shapes" : []
+        "coin_shapes" : [false]
     },
     { 
-        "name" : "wild garden", 
+        "name" : "Wild Garden", 
         "duration" : 2, 
         "terrains" : ["Trees", "Farm"], 
         "shapes" : [[[false, true, true], [true, false, false]]], 
-        "coin_shapes" : []
-    } 
+        "coin_shapes" : [false]
+    },
+    {
+        "name" : "Lagoon",
+        "duration" : 1,
+        "terrains" : ["Water"],
+        "shapes" : [[[false, true], [true, false]], [[true, true, true], [false, true, false]]],
+        "coin_shapes" : [true, false]
+    },
+    {
+        "name" : "Crossing",
+        "duration" : 2,
+        "terrains" : ["Trees", "Village"],
+        "shapes" : [[[false, true, false], [true, true, true], [false, true, false]]],
+        "coin_shapes" : [false]
+    },
+    {
+        "name" : "Kethra's Portals",
+        "duration" : 0,
+        "terrains" : ["Trees", "Village", "Farm", "Water", "Monster"],
+        "shapes" : [[[true]]],
+        "coin_shapes" : [false]
+    },
+    {
+        "name" : "Mangrove",
+        "duration" : 2,
+        "terrains" : ["Trees", "Water"],
+        "shapes" : [[[true, true, true], [true, false, true]]],
+        "coin_shapes" : [false]
+    },
+    {
+        "name" : "Grasslands",
+        "duration" : 1,
+        "terrains" : ["Farm"],
+        "shapes" : [[[true, false, true]], [[false, true, true], [true, false, true]]],
+        "coin_shapes" : [true, false]
+    },
+    {
+        "name" : "Settlement",
+        "duration" : 1,
+        "terrains" : ["Village"],
+        "shapes" : [[[true], [true]], [[false, false, true], [false, true, true], [true, true, false]]],
+        "coin_shapes" : [true, false]
+    },
+    {
+        "name" : "Sintered Terraces",
+        "duration" : 2,
+        "terrains" : ["Farm", "Water"],
+        "shapes" : [[[true, true], [true, true]]],
+        "coin_shapes" : [false]
+    },
+    {
+        "name" : "Clear Grove",
+        "duration" : 1,
+        "terrains" : ["Trees"],
+        "shapes" : [[[true, false], [true, true]], [[true, false, true], [true, false, true]]],
+        "coin_shapes" : [true, false]
+    },
+    {
+        "name" : "Frontier Town",
+        "duration" : 2,
+        "terrains" : ["Village", "Farm"],
+        "shapes" : [[[true, true, true], [false, true, false], [false, true, false]]],
+        "coin_shapes" : [false]
+    }
 ]
