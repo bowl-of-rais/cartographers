@@ -2,6 +2,7 @@ use std::fmt;
 use std::fmt::Display;
 
 use array2d::{Array2D, Error};
+use serde::Deserialize;
 
 const CHART_SIZE: usize = 11;
 
@@ -26,7 +27,7 @@ impl From<Error> for MapError {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Copy, Debug, Deserialize)]
 #[derive(PartialEq)]
 pub enum Terrain {
     Empty,
