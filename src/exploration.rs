@@ -41,7 +41,7 @@ impl Display for Exploration {
 
 pub fn read_explorations(path: &str) -> Result<Vec<Exploration>, Box<dyn Error>> {
     let file_contents = fs::read_to_string(path)?;
-    let explorations : Vec<Exploration> = serde_json::from_str(&file_contents).unwrap();
+    let explorations : Vec<Exploration> = serde_json::from_str(&file_contents)?;
     Ok(explorations)
 }
 
