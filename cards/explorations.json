@@ -1,0 +1,16 @@
+[
+    { 
+        "name" : "coastal village", 
+        "duration" : 2, 
+        "terrains" : ["Village", "Water"], 
+        "shapes" : [[[true, true, true], [true, false, false]]], 
+        "coin_shapes" : []
+    },
+    { 
+        "name" : "wild garden", 
+        "duration" : 2, 
+        "terrains" : ["Trees", "Farm"], 
+        "shapes" : [[[false, true, true], [true, false, false]]], 
+        "coin_shapes" : []
+    } 
+]
