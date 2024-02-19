@@ -1,5 +1,6 @@
 mod chart;
 mod exploration;
+mod player;
 
 use chart::Chart;
 
