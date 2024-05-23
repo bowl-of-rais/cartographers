@@ -1,17 +1,18 @@
 use crate::chart::Chart;
 
+#[derive(Clone)]
 pub struct Player {
     coins : i8,
     points : [i8;4],
-    chart : Chart,
+    chart : Box<Chart>,
 }
 
 impl Player {
-    fn new() -> Player {
+    pub fn new() -> Player {
         Player {
             coins: 0,
             points: [0, 0, 0, 0],
-            chart: Chart::new()
+            chart: Box::new(Chart::new())
         }
     }
 }
