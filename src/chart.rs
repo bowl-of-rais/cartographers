@@ -55,6 +55,12 @@ impl Display for Terrain {
     }
 }
 
+impl Default for Terrain {
+    fn default() -> Self {
+        return Terrain::Empty;
+    }
+}
+
 #[derive(Clone)]
 pub struct Chart {
     contents: Array2D<Terrain>,

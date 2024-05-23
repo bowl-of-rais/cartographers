@@ -37,7 +37,7 @@ impl Game {
 
             while season_duration < SEASON_LENGTHS[self.current_season] {
                 // draw from card stack
-
+                
                 // do card actions -> update players + charts
 
                 // update season_duration

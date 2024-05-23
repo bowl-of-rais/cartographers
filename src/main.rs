@@ -2,6 +2,7 @@ mod chart;
 mod cards;
 mod player;
 mod game;
+mod chartable;
 
 use chart::Chart;
 use game::Game;

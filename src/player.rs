@@ -1,4 +1,4 @@
-use crate::chart::Chart;
+use crate::{cards::Card, chart::Chart, chartable::Chartable};
 
 #[derive(Clone)]
 pub struct Player {
@@ -14,5 +14,9 @@ impl Player {
             points: [0, 0, 0, 0],
             chart: Box::new(Chart::new())
         }
+    }
+
+    pub fn make_choice(card: &impl Card) -> Chartable {
+        return Chartable::default();
     }
 }

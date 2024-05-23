@@ -4,6 +4,11 @@ use std::error::Error;
 use crate::chart::Terrain;
 use serde::Deserialize;
 
+pub trait Card {
+    fn duration() -> i8;
+}
+
+
 #[derive(Debug, Deserialize, Clone)]
 pub struct Exploration {
     name : String,
