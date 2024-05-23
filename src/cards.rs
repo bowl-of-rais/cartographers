@@ -2,10 +2,13 @@ use std::fs;
 use std::fmt::Display;
 use std::error::Error;
 use crate::chart::Terrain;
+use crate::chartable::Shape;
 use serde::Deserialize;
 
 pub trait Card {
     fn duration() -> i8;
+    fn terrain_options() -> Vec<Terrain>;
+    fn shape_options() -> Vec<Shape>;
 }
 
 
