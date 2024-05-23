@@ -4,7 +4,7 @@ use std::error::Error;
 use crate::chart::Terrain;
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Exploration {
     name : String,
     duration : i8,
