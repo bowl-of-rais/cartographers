@@ -1,5 +1,5 @@
 mod chart;
-mod exploration;
+mod cards;
 mod player;
 
 use chart::Chart;
@@ -12,7 +12,7 @@ fn main() {
     }
 
     let path = "assets/explorations.json";
-    let expls = exploration::read_explorations(path);
+    let expls = cards::read_explorations(path);
 
     match expls {
         Ok(explorations) => for ex in explorations { print!("{}", ex); },
