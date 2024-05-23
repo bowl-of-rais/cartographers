@@ -1,8 +1,10 @@
 mod chart;
 mod cards;
 mod player;
+mod game;
 
 use chart::Chart;
+use game::Game;
 
 fn main() {
     let mut c: Chart = Chart::new();
@@ -11,11 +13,6 @@ fn main() {
         Err(e) => print!("{}", e)
     }
 
-    let path = "assets/explorations.json";
-    let expls = cards::read_explorations(path);
-
-    match expls {
-        Ok(explorations) => for ex in explorations { print!("{}", ex); },
-        Err(e) => print!("{}", e)
-    }
+    let mut g: Game = Game::new(4);
+    g.play();
 }

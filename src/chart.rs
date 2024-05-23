@@ -55,6 +55,7 @@ impl Display for Terrain {
     }
 }
 
+#[derive(Clone)]
 pub struct Chart {
     contents: Array2D<Terrain>,
     ruins: Vec<(usize, usize)>,
