@@ -1,5 +1,5 @@
 use crate::player::Player;
-use crate::cards::{self, Exploration};
+use crate::cards::{Card, Exploration};
 
 use rand::thread_rng;
 use rand::seq::SliceRandom;
@@ -14,7 +14,7 @@ pub struct Game {
 
 impl Game {
     pub fn new(num_players: usize) -> Game {
-        let explorations = match cards::read_explorations("assets/explorations.json") {
+        let explorations = match Exploration::read() {
                 Ok(explorations) => explorations,
                 Err(_) => Vec::new() // TODO error handling/option
             };
