@@ -16,7 +16,7 @@ impl Player {
         }
     }
 
-    pub fn make_choice(card: &impl Card) -> Chartable {
-        return Chartable::default();
+    pub fn make_choice(&self, card: &Box<dyn Card>) -> Chartable {
+        !todo!()
     }
 }
