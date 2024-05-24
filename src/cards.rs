@@ -10,8 +10,9 @@ use serde::Deserialize;
 // Can be read from corresponding input file.
 pub trait Card {
     fn duration(&self) -> i8;
-    fn terrain_options(&self) -> Vec<Terrain>;
-    fn shape_options(&self) -> Vec<Shape>;
+    fn terrain_options(&self) -> &Vec<Terrain>;
+    fn shape_options(&self) -> &Vec<Shape>;
+    fn rewards(&self) -> Option<&Vec<bool>>;
     fn read() -> Result<Vec<Self>, Box<dyn Error>> where Self: Sized;
 }
 
@@ -35,12 +36,16 @@ impl Card for Exploration {
         return self.duration;
     }
 
-    fn terrain_options(&self) -> Vec<Terrain> {
-        return self.terrains.clone();
+    fn terrain_options(&self) -> &Vec<Terrain> {
+        return &self.terrains;
     }
 
-    fn shape_options(&self) -> Vec<Shape> {
-        return self.shapes.clone();
+    fn shape_options(&self) -> &Vec<Shape> {
+        return &self.shapes;
+    }
+
+    fn rewards(&self) -> Option<&Vec<bool>> {
+        return Some(&self.coin_shapes);
     }
 
     fn read() -> Result<Vec<Self>, Box<dyn Error>> {

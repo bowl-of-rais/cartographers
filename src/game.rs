@@ -55,16 +55,12 @@ impl Game {
     }
 
     fn process_card(&mut self, card: &Box<dyn Card>) -> i8 {
-        // let players choose + update their charts
-        self.have_players_choose(card);
+        // have players choose + update their charts
+        for p in &mut self.players {
+            let _ = p.play_turn(card);
+        }
 
         return card.duration();
     }
 
-    fn have_players_choose(&mut self, card: &Box<dyn Card>) {
-        for p in &self.players {
-            let c = &p.make_choice(card);
-            // TODO: setting the chartable
-        }
-    }
 }

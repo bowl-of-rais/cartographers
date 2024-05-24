@@ -5,7 +5,7 @@ use crate::chart::Terrain;
 
 // encodes a configuration of chart cells
 #[derive(Clone, Debug, Default, Deserialize)]
-pub struct Shape(Vec<Vec<bool>>);
+pub struct Shape(pub Vec<Vec<bool>>);
 
 impl Display for Shape {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -27,7 +27,7 @@ impl Display for Shape {
 
 // neater representation of a position on the chart
 #[derive(Default)]
-pub struct Position((usize, usize));
+pub struct Position(usize, usize);
 
 
 // has everything needed to be put on a chart
@@ -36,4 +36,30 @@ pub struct Chartable {
     terrain : Terrain,
     shape : Shape,
     position : Position
+}
+
+impl Chartable {
+    pub fn new (terrain : Terrain, shape : Shape, position : Position) -> Chartable {
+        Chartable {
+            terrain,
+            shape,
+            position
+        }
+    }
+
+    pub fn terrain(&self) -> Terrain {
+        return self.terrain;
+    }
+
+    pub fn shape(&self) -> &Shape {
+        return &self.shape;
+    }
+
+    pub fn x(&self) -> usize {
+        return self.position.0;
+    }
+
+    pub fn y(&self) -> usize {
+        return self.position.1;
+    }
 }
