@@ -4,10 +4,9 @@ mod player;
 mod game;
 mod chartable;
 
-use chart::Chart;
 use game::Game;
 
 fn main() {
-    let mut g: Game = Game::new(4);
+    let mut g: Game = Game::new(1);
     g.play();
 }

@@ -52,16 +52,19 @@ impl Player {
 
         // put it into the player's chart
         let c = Chartable::new(t, s.clone(), p);
-        self.chart.set(c)?;
+        self.chart.set(c)?; // TODO: more error handling if this goes wrong
+
+        println!("Updated chart:");
+        println!("{}", self.chart);
 
         // update coins
-        self.add_coin(coins);
+        self.add_coins(coins);
 
         Ok(())
 
     }
 
-    fn add_coin(&mut self, number : i8) {
+    fn add_coins(&mut self, number : i8) {
         self.coins += number;
     }
 
@@ -70,25 +73,27 @@ impl Player {
 
         if let Some(_choice) = first_choice {
 
-            if let Some(rewards) = rewards {
-                println!("The following option(s) give a reward of 1 coin:");
-                for (num, reward) in rewards.iter().enumerate() {
-                    if *reward { print!("{num} ") }
-                }
-                println!("")
-            }
-
             println!("Please choose one of the following options:");
+    
+            if let Some(rewards) = rewards {
+                if rewards.contains(&true) {
+                    println!("The following option(s) give a reward of 1 coin:");
+                    for (num, reward) in rewards.iter().enumerate() {
+                        if *reward { print!("{} ", num+1); }
+                    }
+                    println!("")
+                }
+            }
             
             for (num, option) in options.iter().enumerate() {
                 println!("Option {}:", num+1);
-                print!("{}", option);
+                println!("{}", option);
             }
 
-            let mut str_choice = String::new();
-            let mut num_choice : usize;
-
             loop {
+                let mut str_choice = String::new();
+                let num_choice : usize;
+                
                 io::stdin()
                 .read_line(&mut str_choice)
                 .expect("Failed to read line");
@@ -100,7 +105,10 @@ impl Player {
                         let reward = rewards.unwrap_or(&Vec::new()).get(num_choice-1).is_some_and(|x| *x);
                         return (Some(choice), reward) 
                     },
-                    None => continue
+                    None => { 
+                        println!("Please choose a number between {} and {}!", 1, options.len());
+                        continue;
+                    }
                 }
             }
         }
@@ -109,6 +117,38 @@ impl Player {
     }
 
     fn choose_position(&self, terrain : Terrain, shape : &Shape) -> Option<Position> {
-        !todo!()
+        
+        println!("Please choose a position for the upper left corner of the shape (0-based):");
+
+        println!("Terrain:");
+        println!("{}", terrain);
+        println!("Shape:");
+        println!("{}", shape);
+        println!("Current chart:");
+        println!("{}", self.chart);
+
+
+        let mut str_row = String::new();
+        let mut str_col = String::new();
+        
+        println!("Row:");
+
+        io::stdin()
+        .read_line(&mut str_row)
+        .expect("Failed to read line");
+
+        let row = str_row.trim().parse().expect("Please type a number!");
+
+        println!("Column:");
+
+        io::stdin()
+        .read_line(&mut str_col)
+        .expect("Failed to read line");
+
+        let col = str_col.trim().parse().expect("Please type a number!");
+
+        // TODO: validate values
+        Some((row, col))
+
     }
 }

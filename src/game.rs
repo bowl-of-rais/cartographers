@@ -6,6 +6,8 @@ use rand::seq::SliceRandom;
 
 const SEASON_LENGTHS: [i8;4] = [6, 6, 7, 8];
 
+const SEASON_NAMES: [&str; 4] = ["Spring", "Summer", "Autumn", "Winter"];
+
 pub struct Game {
     players : Vec<Box<Player>>,
     explorations : Vec<Exploration>,
@@ -42,6 +44,8 @@ impl Game {
             deck.shuffle(&mut rng);
 
             while season_duration < SEASON_LENGTHS[self.current_season] {
+                println!("{} - ({}/{})", SEASON_NAMES[self.current_season], season_duration, SEASON_LENGTHS[self.current_season]);
+
                 // draw from cards
                 let _ = match deck.pop() {
                     Some (c) => season_duration += self.process_card(&c),
@@ -55,6 +59,8 @@ impl Game {
     }
 
     fn process_card(&mut self, card: &Box<dyn Card>) -> i8 {
+        // TODO: print card once?
+
         // have players choose + update their charts
         for p in &mut self.players {
             let _ = p.play_turn(card);

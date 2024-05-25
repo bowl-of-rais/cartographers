@@ -95,7 +95,17 @@ impl Chart {
     }
 
     pub fn set(&mut self, c: Chartable) -> Result<(), MapError> {
-        !todo!()
+        let (xlen, ylen) = c.shape().size();
+        let (x, y) = c.position();
+
+        for i in 0..xlen {
+            for j in 0..ylen {
+                if c.shape().at(i, j) {
+                    self.set_cell(x + i, y + j, c.terrain())?;
+                }
+            }
+        }
+        Ok(())
     }
 
     fn set_cell(&mut self, row: usize, col: usize, terrain: Terrain) -> Result<(), MapError> {

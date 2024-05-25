@@ -10,24 +10,36 @@ pub struct Shape(pub Vec<Vec<bool>>);
 impl Display for Shape {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for row in &self.0 {
-                for cell in row {
-                    if *cell {
-                        Display::fmt("X", f)?;
-                    } else {
-                        Display::fmt("_", f)?;
-                    }
+            for cell in row {
+                if *cell {
+                    Display::fmt("X", f)?;
+                } else {
+                    Display::fmt("_", f)?;
                 }
-                Display::fmt("\n", f)?;
             }
             Display::fmt("\n", f)?;
+        }
         Ok(())
+    }
+}
+
+impl Shape {
+    pub fn size(&self) -> (usize, usize) {
+        (self.0.len(), self.0[0].len())
+    }
+
+    pub fn at(&self, row: usize, col: usize) -> bool {
+        if row < self.0.len() && col < self.0[0].len() {
+            return self.0[row][col];
+        } else {
+            false
+        }
     }
 }
 
 
 // neater representation of a position on the chart
-#[derive(Default)]
-pub struct Position(usize, usize);
+pub type Position = (usize, usize);
 
 
 // has everything needed to be put on a chart
@@ -55,11 +67,8 @@ impl Chartable {
         return &self.shape;
     }
 
-    pub fn x(&self) -> usize {
-        return self.position.0;
+    pub fn position(&self) -> Position {
+        return self.position;
     }
 
-    pub fn y(&self) -> usize {
-        return self.position.1;
-    }
 }
