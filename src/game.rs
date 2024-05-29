@@ -1,6 +1,7 @@
 use crate::player::Player;
 use crate::cards::{Card, Exploration};
 use crate::edicts::Edict;
+use crate::resource::Read;
 
 use rand::thread_rng;
 use rand::seq::SliceRandom;

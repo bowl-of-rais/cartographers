@@ -3,17 +3,17 @@ use std::fmt::Display;
 use std::error::Error;
 use crate::chart::Terrain;
 use crate::chartable::Shape;
+use crate::resource::Read;
 use serde::Deserialize;
 
 // CARDS
 // Are drawn from a stack, players put new entries into their charts based on the contents.
 // Can be read from corresponding input file.
-pub trait Card {
+pub trait Card: Read{
     fn duration(&self) -> i8;
     fn terrain_options(&self) -> &Vec<Terrain>;
     fn shape_options(&self) -> &Vec<Shape>;
     fn rewards(&self) -> Option<&Vec<bool>>;
-    fn read() -> Result<Vec<Self>, Box<dyn Error>> where Self: Sized;
 }
 
 // EXPLORATIONS
@@ -31,6 +31,14 @@ pub struct Exploration {
 
 const EXPLORATION_PATH : &str = "assets/explorations.json";
 
+impl Read for Exploration {
+    fn read() -> Result<Vec<Self>, Box<dyn Error>> {
+        let file_contents = fs::read_to_string(EXPLORATION_PATH)?;
+        let explorations : Vec<Exploration> = serde_json::from_str(&file_contents)?;
+        Ok(explorations)
+    }
+}
+
 impl Card for Exploration {
     fn duration(&self) -> i8 {
         return self.duration;
@@ -46,12 +54,6 @@ impl Card for Exploration {
 
     fn rewards(&self) -> Option<&Vec<bool>> {
         return Some(&self.coin_shapes);
-    }
-
-    fn read() -> Result<Vec<Self>, Box<dyn Error>> {
-        let file_contents = fs::read_to_string(EXPLORATION_PATH)?;
-        let explorations : Vec<Exploration> = serde_json::from_str(&file_contents)?;
-        Ok(explorations)
     }
 }
 
