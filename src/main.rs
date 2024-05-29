@@ -4,6 +4,7 @@ mod player;
 mod game;
 mod chartable;
 mod edicts;
+mod resource;
 
 use game::Game;
 
