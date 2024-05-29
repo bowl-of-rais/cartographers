@@ -2,15 +2,57 @@ use std::fs;
 use std::fmt::Display;
 use std::error::Error;
 use crate::chart::Terrain;
+use crate::chartable::Shape;
 use serde::Deserialize;
+
+// CARDS
+// Are drawn from a stack, players put new entries into their charts based on the contents.
+// Can be read from corresponding input file.
+pub trait Card {
+    fn duration(&self) -> i8;
+    fn terrain_options(&self) -> &Vec<Terrain>;
+    fn shape_options(&self) -> &Vec<Shape>;
+    fn rewards(&self) -> Option<&Vec<bool>>;
+    fn read() -> Result<Vec<Self>, Box<dyn Error>> where Self: Sized;
+}
+
+// EXPLORATIONS
+// Cards containing a choice of shapes (some of which award a coin) and a choice of terrains.
+// Players choose a shape and terrain to put somewhere on their personal chart.
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Exploration {
     name : String,
     duration : i8,
     terrains : Vec<Terrain>,
-    shapes : Vec<Vec<Vec<bool>>>,
+    shapes : Vec<Shape>,
     coin_shapes : Vec<bool>, // game rules: only shapes can give coins
+}
+
+const EXPLORATION_PATH : &str = "assets/explorations.json";
+
+impl Card for Exploration {
+    fn duration(&self) -> i8 {
+        return self.duration;
+    }
+
+    fn terrain_options(&self) -> &Vec<Terrain> {
+        return &self.terrains;
+    }
+
+    fn shape_options(&self) -> &Vec<Shape> {
+        return &self.shapes;
+    }
+
+    fn rewards(&self) -> Option<&Vec<bool>> {
+        return Some(&self.coin_shapes);
+    }
+
+    fn read() -> Result<Vec<Self>, Box<dyn Error>> {
+        let file_contents = fs::read_to_string(EXPLORATION_PATH)?;
+        let explorations : Vec<Exploration> = serde_json::from_str(&file_contents)?;
+        Ok(explorations)
+    }
 }
 
 impl Display for Exploration {
@@ -22,26 +64,11 @@ impl Display for Exploration {
         Display::fmt("\n", f)?;
 
         for shape in &self.shapes {
-            for row in shape {
-                for cell in row {
-                    if *cell {
-                        Display::fmt("X", f)?;
-                    } else {
-                        Display::fmt("_", f)?;
-                    }
-                }
-                Display::fmt("\n", f)?;
-            }
+            Display::fmt(shape, f)?; 
             Display::fmt("\n", f)?;
         }
 
         Ok(())
     }
-}
-
-pub fn read_explorations(path: &str) -> Result<Vec<Exploration>, Box<dyn Error>> {
-    let file_contents = fs::read_to_string(path)?;
-    let explorations : Vec<Exploration> = serde_json::from_str(&file_contents)?;
-    Ok(explorations)
 }
 
