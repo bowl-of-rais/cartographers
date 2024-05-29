@@ -1,0 +1,8 @@
+[
+    {
+        "multiplier" : 1,
+        "scored_segment" : "Row",
+        "condition" : "Containing(3, Trees)",
+        "category" : "A"
+    }
+]
