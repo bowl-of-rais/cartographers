@@ -1,5 +1,6 @@
 use crate::player::Player;
 use crate::cards::{Card, Exploration};
+use crate::edicts::Edict;
 
 use rand::thread_rng;
 use rand::seq::SliceRandom;
@@ -10,6 +11,7 @@ const SEASON_NAMES: [&str; 4] = ["Spring", "Summer", "Autumn", "Winter"];
 
 pub struct Game {
     players : Vec<Box<Player>>,
+    edicts : [Edict; 4],
     explorations : Vec<Exploration>,
     current_season : usize,
 }
@@ -22,6 +24,7 @@ impl Game {
             };
         Game {
             players : vec![Box::new(Player::new()); num_players],
+            edicts : [Edict::default(), Edict::default(), Edict::default(), Edict::default()],
             explorations : explorations,
             current_season : 0,
         }

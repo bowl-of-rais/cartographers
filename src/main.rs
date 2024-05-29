@@ -3,6 +3,7 @@ mod cards;
 mod player;
 mod game;
 mod chartable;
+mod edicts;
 
 use game::Game;
 
