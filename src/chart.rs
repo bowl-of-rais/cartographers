@@ -3,6 +3,9 @@ use std::fmt::Display;
 
 use array2d::{Array2D, Error};
 use serde::Deserialize;
+use serde_json::Map;
+
+use crate::chartable::Chartable;
 
 const CHART_SIZE: usize = 11;
 
@@ -55,6 +58,12 @@ impl Display for Terrain {
     }
 }
 
+impl Default for Terrain {
+    fn default() -> Self {
+        return Terrain::Empty;
+    }
+}
+
 #[derive(Clone)]
 pub struct Chart {
     contents: Array2D<Terrain>,
@@ -85,7 +94,21 @@ impl Chart {
         }
     }
 
-    pub fn set(&mut self, row: usize, col: usize, terrain: Terrain) -> Result<(), MapError> {
+    pub fn set(&mut self, c: Chartable) -> Result<(), MapError> {
+        let (xlen, ylen) = c.shape().size();
+        let (x, y) = c.position();
+
+        for i in 0..xlen {
+            for j in 0..ylen {
+                if c.shape().at(i, j) {
+                    self.set_cell(x + i, y + j, c.terrain())?;
+                }
+            }
+        }
+        Ok(())
+    }
+
+    fn set_cell(&mut self, row: usize, col: usize, terrain: Terrain) -> Result<(), MapError> {
         self.contents.set_terrain(row, col, terrain)?;
         self.penalized.retain(| (x, y) | *x != row || *y != col);
         Ok(())
