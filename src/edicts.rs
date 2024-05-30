@@ -3,7 +3,7 @@ use serde::Deserialize;
 use crate::{chart::Chart, chart::Terrain, resource::Read};
 
 
-#[derive(PartialEq, Deserialize)]
+#[derive(Clone, Copy, Deserialize, PartialEq)]
 enum Segment {
     Row,
     Column,
@@ -14,15 +14,15 @@ enum Segment {
     Square(usize)
 }
 
-#[derive(Deserialize)]
-enum Category {
+#[derive(Clone, Copy, Deserialize, PartialEq)]
+pub enum Category {
     A,
     B, 
     C,
     D
 }
 
-#[derive(Deserialize)]
+#[derive(Clone, Copy, Deserialize)]
 enum ScoreCondition {
     Containing(usize, Terrain), // TODO: min, max, only, not, different terrains?
     In(Segment, Terrain),
@@ -30,7 +30,7 @@ enum ScoreCondition {
     DifferentTerrains(usize)
 }
 
-#[derive(Deserialize)]
+#[derive(Clone, Copy, Deserialize)]
 pub struct Edict {
     multiplier : usize,
     scored_segment : Segment,
@@ -60,11 +60,11 @@ impl Read for Edict {
 }
 
 impl Edict {
-    pub fn draw() -> [Self; 4] {
-        !todo!()
+    pub fn category(&self) -> Category {
+        return self.category;
     }
 
-    pub fn score(chart: &Chart) -> i8 {
+    pub fn score(&self, chart: &Chart) -> i8 {
         !todo!()
     }
 }

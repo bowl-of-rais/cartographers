@@ -1,6 +1,6 @@
 use crate::player::Player;
 use crate::cards::{Card, Exploration};
-use crate::edicts::Edict;
+use crate::edicts::{Edict, Category};
 use crate::resource::Read;
 
 use rand::thread_rng;
@@ -32,6 +32,8 @@ impl Game {
     }
 
     pub fn play(&mut self) {
+
+        self.draw_edicts();
 
         while self.current_season < 4 {
             let mut season_duration = 0;
@@ -71,6 +73,23 @@ impl Game {
         }
 
         return card.duration();
+    }
+
+    fn draw_edicts(&mut self) {
+        let mut all_edicts = Edict::read().unwrap_or_default();
+        let mut rng = thread_rng();
+        all_edicts.shuffle(&mut rng);
+
+        let find_first_of = | c: Category | all_edicts
+                                                                            .iter()
+                                                                            .find_map(|&e| if e.category() == c { Some(e) } else { None } )
+                                                                            .unwrap_or_else(| | Edict::default());
+        
+        self.edicts[0] = find_first_of(Category::A);
+        self.edicts[1] = find_first_of(Category::B);
+        self.edicts[2] = find_first_of(Category::C);
+        self.edicts[3] = find_first_of(Category::D);
+        
     }
 
 }
