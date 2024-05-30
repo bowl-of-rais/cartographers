@@ -1,25 +1,23 @@
 use std::fmt;
 use std::fmt::Display;
 
+use crate::chartable::Chartable;
 use array2d::{Array2D, Error};
 use serde::Deserialize;
-use serde_json::Map;
-
-use crate::chartable::Chartable;
 
 const CHART_SIZE: usize = 11;
 
 #[derive(Debug)]
 pub enum MapError {
     SpaceNotEmpty,
-    ArrayError(Error)
+    ArrayError(Error),
 }
 
 impl Display for MapError {
-    fn fmt(&self, f: &mut std::fmt::Formatter)->std::fmt::Result{
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             MapError::SpaceNotEmpty => Display::fmt(&"SpaceNotEmpty", f),
-            MapError::ArrayError(e) => Display::fmt(e, f)
+            MapError::ArrayError(e) => Display::fmt(e, f),
         }
     }
 }
@@ -30,8 +28,7 @@ impl From<Error> for MapError {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize)]
-#[derive(PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq)]
 pub enum Terrain {
     Empty,
     Farm,
@@ -44,16 +41,16 @@ pub enum Terrain {
 }
 
 impl Display for Terrain {
-    fn fmt(&self, f: &mut std::fmt::Formatter)->std::fmt::Result{
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             Terrain::Empty => Display::fmt(&" _ ", f),
-            Terrain::Farm =>  Display::fmt(&" F ", f),
+            Terrain::Farm => Display::fmt(&" F ", f),
             Terrain::Monster => Display::fmt(&" M ", f),
-            Terrain::Mountain =>  Display::fmt(&" ^ ", f),
-            Terrain::Trees =>  Display::fmt(&" T ", f),
-            Terrain::Village =>  Display::fmt(&" V ", f),
-            Terrain::Wasteland =>  Display::fmt(&" * ", f),
-            Terrain::Water =>  Display::fmt(&" W ", f),
+            Terrain::Mountain => Display::fmt(&" ^ ", f),
+            Terrain::Trees => Display::fmt(&" T ", f),
+            Terrain::Village => Display::fmt(&" V ", f),
+            Terrain::Wasteland => Display::fmt(&" * ", f),
+            Terrain::Water => Display::fmt(&" W ", f),
         }
     }
 }
@@ -67,8 +64,8 @@ impl Default for Terrain {
 #[derive(Clone)]
 pub struct Chart {
     contents: Array2D<Terrain>,
-    ruins: Vec<(usize, usize)>,
-    penalized: Vec<(usize, usize)>
+    free_ruins: Vec<(usize, usize)>,
+    penalized: Vec<(usize, usize)>,
 }
 
 impl Display for Chart {
@@ -89,8 +86,8 @@ impl Chart {
     pub fn new() -> Chart {
         Chart {
             contents: Array2D::filled_with(Terrain::Empty, CHART_SIZE, CHART_SIZE),
-            ruins: Vec::new(),
-            penalized: Vec::new()
+            free_ruins: Vec::new(),
+            penalized: Vec::new(),
         }
     }
 
@@ -110,12 +107,25 @@ impl Chart {
 
     fn set_cell(&mut self, row: usize, col: usize, terrain: Terrain) -> Result<(), MapError> {
         self.contents.set_terrain(row, col, terrain)?;
-        self.penalized.retain(| (x, y) | *x != row || *y != col);
+        self.penalized.retain(|(x, y)| *x != row || *y != col);
+        self.free_ruins.retain(|(x, y)| *x != row || *y != col);
         Ok(())
     }
 
     pub fn get(&mut self, row: usize, col: usize) -> Option<&Terrain> {
         return self.contents.get(row, col);
+    }
+
+    pub fn contents(&self) -> &Array2D<Terrain> {
+        return &self.contents;
+    }
+
+    pub fn free_ruins(&self) -> &Vec<(usize, usize)> {
+        return &self.free_ruins;
+    }
+
+    pub fn penalized(&self) -> &Vec<(usize, usize)> {
+        return &self.penalized;
     }
 }
 
@@ -125,11 +135,13 @@ pub trait TerrainSettable {
 
 impl TerrainSettable for Array2D<Terrain> {
     fn set_terrain(&mut self, row: usize, column: usize, element: Terrain) -> Result<(), MapError> {
-        let current = self.get(row, column).ok_or(Error::IndicesOutOfBounds(row, column))?;
-        
-        if *current == Terrain::Empty { 
-            self.set(row, column, element)?; 
-        } else { 
+        let current = self
+            .get(row, column)
+            .ok_or(Error::IndicesOutOfBounds(row, column))?;
+
+        if *current == Terrain::Empty {
+            self.set(row, column, element)?;
+        } else {
             return Err(MapError::SpaceNotEmpty);
         }
 

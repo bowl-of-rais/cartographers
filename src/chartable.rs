@@ -1,7 +1,6 @@
-use std::fmt::Display;
-use serde::Deserialize;
 use crate::chart::Terrain;
-
+use serde::Deserialize;
+use std::fmt::Display;
 
 // encodes a configuration of chart cells
 #[derive(Clone, Debug, Default, Deserialize)]
@@ -37,25 +36,23 @@ impl Shape {
     }
 }
 
-
 // neater representation of a position on the chart
 pub type Position = (usize, usize);
-
 
 // has everything needed to be put on a chart
 #[derive(Default)]
 pub struct Chartable {
-    terrain : Terrain,
-    shape : Shape,
-    position : Position
+    terrain: Terrain,
+    shape: Shape,
+    position: Position,
 }
 
 impl Chartable {
-    pub fn new (terrain : Terrain, shape : Shape, position : Position) -> Chartable {
+    pub fn new(terrain: Terrain, shape: Shape, position: Position) -> Chartable {
         Chartable {
             terrain,
             shape,
-            position
+            position,
         }
     }
 
@@ -70,5 +67,4 @@ impl Chartable {
     pub fn position(&self) -> Position {
         return self.position;
     }
-
 }

@@ -1,9 +1,9 @@
-mod chart;
 mod cards;
-mod player;
-mod game;
+mod chart;
 mod chartable;
 mod edicts;
+mod game;
+mod player;
 mod resource;
 
 use game::Game;
