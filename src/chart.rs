@@ -127,6 +127,11 @@ impl Chart {
     pub fn penalized(&self) -> &Vec<(usize, usize)> {
         return &self.penalized;
     }
+
+    // returns 0 if self.penalized.len() does not fit into a i8
+    pub fn num_penalized(&self) -> i8 {
+        return self.penalized.len().try_into().unwrap_or(0);
+    }
 }
 
 pub trait TerrainSettable {

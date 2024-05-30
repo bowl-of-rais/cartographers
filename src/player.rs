@@ -164,4 +164,16 @@ impl Player {
         // TODO: validate values
         Some((row, col))
     }
+
+    pub fn add_points(&mut self, season: usize, points: i8) {
+        self.points[season] += points;
+    }
+
+    pub fn chart(&self) -> &Chart {
+        return &self.chart;
+    }
+
+    pub fn coins(&self) -> i8 {
+        return self.coins;
+    }
 }

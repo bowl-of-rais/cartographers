@@ -10,6 +10,8 @@ const SEASON_LENGTHS: [i8; 4] = [6, 6, 7, 8];
 
 const SEASON_NAMES: [&str; 4] = ["Spring", "Summer", "Autumn", "Winter"];
 
+const SEASON_EDICTS: [(usize, usize); 4] = [(0, 1), (1, 2), (2, 3), (3, 1)];
+
 pub struct Game {
     players: Vec<Box<Player>>,
     edicts: [Edict; 4],
@@ -62,11 +64,23 @@ impl Game {
                     SEASON_LENGTHS[self.current_season]
                 );
 
-                // draw from cards
+                // draw from cards + process
                 let _ = match deck.pop() {
                     Some(c) => season_duration += self.process_card(&c),
                     None => println!("Deck is empty :0"),
                 };
+            }
+
+            // calculate season scores for each player
+            for p in &mut self.players {
+                let edict_1 = self.edicts[SEASON_EDICTS[self.current_season].0];
+                let edict_2 = self.edicts[SEASON_EDICTS[self.current_season].1];
+
+                p.add_points(self.current_season, edict_1.score(p.chart()));
+                p.add_points(self.current_season, edict_2.score(p.chart()));
+
+                p.add_points(self.current_season, p.coins());
+                p.add_points(self.current_season, -p.chart().num_penalized());
             }
 
             self.current_season += 1;
