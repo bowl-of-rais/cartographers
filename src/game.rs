@@ -110,9 +110,10 @@ impl Game {
                 .unwrap_or_else(|| Edict::default())
         };
 
-        self.edicts[0] = find_first_of(Category::A);
-        self.edicts[1] = find_first_of(Category::B);
-        self.edicts[2] = find_first_of(Category::C);
-        self.edicts[3] = find_first_of(Category::D);
+        // TODO: randomize which category comes when
+        self.edicts[0] = find_first_of(Category::Trees);
+        self.edicts[1] = find_first_of(Category::WatersFarms);
+        self.edicts[2] = find_first_of(Category::Villages);
+        self.edicts[3] = find_first_of(Category::Structures);
     }
 }

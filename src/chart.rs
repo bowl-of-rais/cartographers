@@ -61,6 +61,16 @@ impl Default for Terrain {
     }
 }
 
+impl Terrain {
+    fn is_empty(&self) -> bool {
+        return *self == Terrain::Empty;
+    }
+
+    fn is_filled(&self) -> bool {
+        return *self != Terrain::Empty;
+    }
+}
+
 #[derive(Clone)]
 pub struct Chart {
     contents: Array2D<Terrain>,

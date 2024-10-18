@@ -3,36 +3,42 @@ use serde::Deserialize;
 use std::{error::Error, fs};
 
 #[derive(Clone, Copy, Deserialize, PartialEq)]
-enum Segment {
+enum FragmentShape {
     Row,
     Column,
     RowOrColumn,
+    RowAndColumn,
     Cell,
-    Cluster,
+    Cluster(Terrain),
+    Spaces(Terrain, usize),
     Rectangle(usize, usize),
     Square(usize),
+    Diagonal(bool),
 }
+
+// represent fragments as a set of cells?
+type Fragment = Vec<(usize, usize)>;
 
 #[derive(Clone, Copy, Deserialize, PartialEq)]
 pub enum Category {
-    A,
-    B,
-    C,
-    D,
+    Trees,
+    WatersFarms,
+    Villages,
+    Structures,
 }
 
 #[derive(Clone, Copy, Deserialize)]
 enum ScoreCondition {
     Containing(usize, Terrain), // TODO: min, max, only, not, different terrains?
-    In(Segment, Terrain),
-    NextTo(Segment, Terrain), // TODO: not, only
+    In(FragmentType, Terrain),
+    NextTo(FragmentType, Terrain), // TODO: not, only
     DifferentTerrains(usize),
 }
 
 #[derive(Clone, Copy, Deserialize)]
 pub struct Edict {
     multiplier: usize,
-    scored_segment: Segment,
+    scored_segment: SegmentType,
     condition: ScoreCondition,
     category: Category,
 }
@@ -43,9 +49,9 @@ impl Default for Edict {
     fn default() -> Self {
         Edict {
             multiplier: 0,
-            scored_segment: Segment::Row,
+            scored_segment: SegmentType::Row,
             condition: ScoreCondition::Containing(1, Terrain::Empty),
-            category: Category::A,
+            category: Category::Trees,
         }
     }
 }
@@ -64,6 +70,8 @@ impl Edict {
     }
 
     pub fn score(&self, chart: &Chart) -> i8 {
+        // general idea: count `Segments` that satisfy the given `ScoreCondition` and apply multiplier to count
+
         !todo!()
     }
 }
